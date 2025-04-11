@@ -69,10 +69,9 @@ To run the localhost server and access the prediction tool, follow these steps:
      ```bash
      cd "..\PM-time-series"
      ```
-   - Run the following command to start the backend and HTTP server:
-     ```bash
-     python start_servers.py
-     ```
+   - Run the following file to start the backend and HTTP server:
+        `Run local host.bat`
+
    - This script will:
      - Free up port 8000 if it is already in use.
      - Start the FastAPI backend server for predictions.
