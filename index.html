@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predict Remaining Useful Life</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input {
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        small {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Predict Aircraft Engine Remaining Life in Flight Cycles</h1>
+        <button id="connectButton" style="float: right;">Connect to Server</button>
+        <form id="predictionForm">
+            <label for="flight_cycle">Flight Cycle:</label>
+            <input type="number" id="flight_cycle" name="flight_cycle" placeholder="e.g., 100" min="0" max="5000" >
+            <small>Value must be between 0 and 5000</small>
+
+            <label for="egt_probe_average">EGT Probe Average:</label>
+            <input type="number" id="egt_probe_average" name="egt_probe_average" placeholder="e.g., 500" min="585" max="970" >
+            <small>Value must be between 585 and 970</small>
+
+            <label for="fuel_flw">Fuel Flow:</label>
+            <input type="number" id="fuel_flw" name="fuel_flw" placeholder="e.g., 300" min="1105" max="5687" >
+            <small>Value must be between 1105 and 5687</small>
+
+            <label for="core_spd">Core Speed:</label>
+            <input type="number" id="core_spd" name="core_spd" placeholder="e.g., 95" min="91" max="109" >
+            <small>Value must be between 91 and 109</small>
+
+            <label for="zpn12p">ZPN12P:</label>
+            <input type="number" id="zpn12p" name="zpn12p" placeholder="e.g., 50" min="52" max="91" >
+            <small>Value must be between 52 and 91</small>
+
+            <label for="vib_n1_1_bearing">Vibration N1 #1 Bearing:</label>
+            <input type="number" id="vib_n1_1_bearing" name="vib_n1_1_bearing" placeholder="e.g., 0.02" min="0" max="0" >
+            <small>Value must be between 0 and 0.4</small>
+
+            <label for="vib_n2_1_bearing">Vibration N2 #1 Bearing:</label>
+            <input type="number" id="vib_n2_1_bearing" name="vib_n2_1_bearing" placeholder="e.g., 0.03" min="0" max="1" >
+            <small>Value must be between 0 and 1.25</small>
+
+            <label for="vib_n2_turbine_frame">Vibration N2 Turbine Frame:</label>
+            <input type="number" id="vib_n2_turbine_frame" name="vib_n2_turbine_frame" placeholder="e.g., 0.04" min="0" max="2" >
+            <small>Value must be between 0 and 2</small>
+
+            <label for="flight_phase">Flight Phase:</label>
+            <select id="flight_phase" name="flight_phase">
+                <option value="CRUISE">CRUISE</option>
+                <option value="TAKEOFF">TAKEOFF</option>
+            </select>
+            <small>Select the flight phase: CRUISE or TAKEOFF</small>
+
+            <button type="submit">Predict</button>
+        </form>
+        <div class="result" id="result"></div>
+        <div class="health-bar" id="healthBarContainer" style="margin-top: 20px; display: none;">
+            <label for="healthBar">Health Indicator:</label>
+            <div style="background-color: #ccc; border-radius: 4px; overflow: hidden; width: 100%; height: 20px;">
+                <div id="healthBar" style="background-color: #28a745; height: 100%; width: 0%;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const connectButton = document.getElementById('connectButton');
+        const resultDiv = document.getElementById('result');
+        const healthBarContainer = document.getElementById('healthBarContainer');
+        const healthBar = document.getElementById('healthBar');
+
+        connectButton.addEventListener('click', async function() {
+            try {
+                const response = await fetch('http://127.0.0.1:8000/health', {
+                    method: 'GET'
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.status} - ${response.statusText}`);
+                }
+
+                const healthStatus = await response.json();
+                if (healthStatus.status === 'healthy') {
+                    resultDiv.textContent = 'Server connected successfully!';
+                    connectButton.disabled = true;
+                } else {
+                    throw new Error('Server is not healthy. Please check the server.');
+                }
+            } catch (error) {
+                resultDiv.textContent = `Error: ${error.message}`;
+                console.error('Failed to connect to the server:', error);
+            }
+        });
+
+        document.getElementById('predictionForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+
+            // Use placeholder values if inputs are empty
+            const placeholders = {
+                flight_cycle: 100,
+                egt_probe_average: 500,
+                fuel_flw: 300,
+                core_spd: 95,
+                zpn12p: 50,
+                vib_n1_1_bearing: 0.02,
+                vib_n2_1_bearing: 0.03,
+                vib_n2_turbine_frame: 0.04
+            };
+
+            for (const key in data) {
+                if (!data[key]) {
+                    data[key] = placeholders[key];
+                } else {
+                    data[key] = parseFloat(data[key]);
+                }
+            }
+
+            try {
+                const response = await fetch('http://127.0.0.1:8000/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    if (response.status === 0) {
+                        throw new Error('Network error: Unable to reach the server. Please ensure the API server is running.');
+                    } else {
+                        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+                    }
+                }
+
+                const result = await response.json();
+                const roundedPrediction = Math.round(result.RUL_prediction);
+                document.getElementById('result').textContent = `Predicted RUL: ${roundedPrediction}`;
+
+                // Update health bar
+                const maxFlightCycle = 5000; // Assuming max flight cycle is 5000
+                const healthPercentage = (roundedPrediction / maxFlightCycle) * 100;
+                healthBar.style.width = `${healthPercentage}%`;
+                healthBarContainer.style.display = 'block';
+            } catch (error) {
+                document.getElementById('result').textContent = `Error: ${error.message}`;
+                console.error('Detailed error:', error);
+            }
+        });
+    </script>
+</body>
+</html>

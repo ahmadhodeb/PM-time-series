@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+pandas
+scikit-learn
+joblib
+mlflow
+# Added Apache Airflow to the requirements
+apache-airflow
