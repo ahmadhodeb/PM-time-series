@@ -19,6 +19,9 @@ target = 'RUL'
 X = df[features]
 y = df[target]
 
+# One-hot encode the 'flight_phase' column
+X = pd.get_dummies(X, columns=['flight_phase'], drop_first=False)
+
 # Train-test split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
@@ -68,6 +71,9 @@ with mlflow.start_run():
     import joblib
     joblib.dump(scaler, "scale_xgb.pkl")
     mlflow.log_artifact("scale_xgb.pkl")
+
+    # Save the best model
+    joblib.dump(best_model, "best_xgb_model.pkl")
 
     # Predictions
     y_pred = best_model.predict(X_test_scaled)

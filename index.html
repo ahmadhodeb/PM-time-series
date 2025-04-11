@@ -107,35 +107,35 @@
         <h1>Predict Aircraft Engine Remaining Life in Flight Cycles</h1>
         <form id="predictionForm">
             <label for="flight_cycle">Flight Cycle:</label>
-            <input type="number" id="flight_cycle" name="flight_cycle" placeholder="2500" min="0" max="5000" >
+            <input type="number" id="flight_cycle" name="flight_cycle" placeholder="2500" min="0" max="5000" step="0.01" >
             <small>Value must be between 0 and 5000</small>
 
             <label for="egt_probe_average">EGT Probe Average:</label>
-            <input type="number" id="egt_probe_average" name="egt_probe_average" placeholder="777.5" min="585" max="970" >
+            <input type="number" id="egt_probe_average" name="egt_probe_average" placeholder="777.5" min="585" max="970" step="0.01" >
             <small>Value must be between 585 and 970</small>
 
             <label for="fuel_flw">Fuel Flow:</label>
-            <input type="number" id="fuel_flw" name="fuel_flw" placeholder="3396" min="1105" max="5687" >
+            <input type="number" id="fuel_flw" name="fuel_flw" placeholder="3396" min="1105" max="5687" step="0.01" >
             <small>Value must be between 1105 and 5687</small>
 
             <label for="core_spd">Core Speed:</label>
-            <input type="number" id="core_spd" name="core_spd" placeholder="100" min="91" max="109" >
+            <input type="number" id="core_spd" name="core_spd" placeholder="100" min="91" max="109" step="0.01" >
             <small>Value must be between 91 and 109</small>
 
             <label for="zpn12p">ZPN12P:</label>
-            <input type="number" id="zpn12p" name="zpn12p" placeholder="71.5" min="52" max="91" >
+            <input type="number" id="zpn12p" name="zpn12p" placeholder="71.5" min="52" max="91" step="0.01" >
             <small>Value must be between 52 and 91</small>
 
             <label for="vib_n1_1_bearing">Vibration N1 #1 Bearing:</label>
-            <input type="number" id="vib_n1_1_bearing" name="vib_n1_1_bearing" placeholder="0.2" min="0" max="0" >
+            <input type="number" id="vib_n1_1_bearing" name="vib_n1_1_bearing" placeholder="0.2" min="0" max="1" step="0.01" >
             <small>Value must be between 0 and 1</small>
 
             <label for="vib_n2_1_bearing">Vibration N2 #1 Bearing:</label>
-            <input type="number" id="vib_n2_1_bearing" name="vib_n2_1_bearing" placeholder="0.625" min="0" max="1" >
+            <input type="number" id="vib_n2_1_bearing" name="vib_n2_1_bearing" placeholder="0.625" min="0" max="1.25" step="0.01" >
             <small>Value must be between 0 and 1.25</small>
 
             <label for="vib_n2_turbine_frame">Vibration N2 Turbine Frame:</label>
-            <input type="number" id="vib_n2_turbine_frame" name="vib_n2_turbine_frame" placeholder="1" min="0" max="2" >
+            <input type="number" id="vib_n2_turbine_frame" name="vib_n2_turbine_frame" placeholder="1" min="0" max="2" step="0.01" >
             <small>Value must be between 0 and 2</small>
 
             <label for="flight_phase">Flight Phase:</label>
@@ -204,8 +204,31 @@
 
                 console.log('Input values:', inputValues);
 
+                // Apply scaling to input values
+                const scaleFactors = {
+                    flight_cycle: { mean: 2500, std: 1000 },
+                    egt_probe_average: { mean: 777.5, std: 100 },
+                    fuel_flw: { mean: 3396, std: 1000 },
+                    core_spd: { mean: 100, std: 5 },
+                    zpn12p: { mean: 71.5, std: 10 },
+                    vib_n1_1_bearing: { mean: 0.2, std: 0.1 },
+                    vib_n2_1_bearing: { mean: 0.625, std: 0.2 },
+                    vib_n2_turbine_frame: { mean: 1, std: 0.5 }
+                };
+
+                const scaledInputValues = inputValues.map((value, index) => {
+                    const keys = Object.keys(scaleFactors);
+                    if (index < keys.length) {
+                        const { mean, std } = scaleFactors[keys[index]];
+                        return (value - mean) / std;
+                    }
+                    return value; // For flight phase binary values
+                });
+
+                console.log('Scaled input values:', scaledInputValues);
+
                 // Prepare input tensor
-                const inputTensor = new ort.Tensor('float32', new Float32Array(inputValues), [1, 10]);
+                const inputTensor = new ort.Tensor('float32', new Float32Array(scaledInputValues), [1, 10]);
 
                 // Run inference
                 const feeds = { input: inputTensor };
