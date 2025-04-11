@@ -42,6 +42,8 @@ class PredictionInput(BaseModel):
     vib_n1_1_bearing: float
     vib_n2_1_bearing: float
     vib_n2_turbine_frame: float
+    flight_phase_CRUISE: int
+    flight_phase_TAKEOFF: int
 
 @app.get("/health")
 async def health_check():
@@ -80,8 +82,8 @@ async def predict(input_data: PredictionInput):
                 input_data.vib_n1_1_bearing,  # Map to vib_n1_#1_bearing
                 input_data.vib_n2_1_bearing,  # Map to vib_n2_#1_bearing
                 input_data.vib_n2_turbine_frame,
-                0,  # Placeholder for flight_phase_CRUISE
-                0   # Placeholder for flight_phase_TAKEOFF
+                input_data.flight_phase_CRUISE,  # Use provided value for flight_phase_CRUISE
+                input_data.flight_phase_TAKEOFF   # Use provided value for flight_phase_TAKEOFF
             ]
         ])
 
@@ -94,8 +96,8 @@ async def predict(input_data: PredictionInput):
         # Make a prediction
         prediction = model.predict(scaled_input)
 
-        # Convert prediction to a native Python float
-        prediction_value = float(prediction[0])
+        # Convert prediction to a native Python float and round to an integer
+        prediction_value = int(round(prediction[0]))
 
         # Log the prediction
         logging.info(f"Input: {input_data.model_dump()}, Prediction: {prediction_value}")
