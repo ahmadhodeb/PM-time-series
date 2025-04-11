@@ -142,11 +142,11 @@
             <select id="flight_phase" name="flight_phase">
                 <option value="CRUISE">CRUISE</option>
                 <option value="TAKEOFF">TAKEOFF</option>
+                <option value="CLIMB">CLIMB</option>
             </select>
-            <small>Select the flight phase: CRUISE or TAKEOFF</small>
+            <small>Select the flight phase: CRUISE, TAKEOFF or CLIMB</small>
 
             <button type="submit">Predict</button>
-        </form>
         <div class="result" id="result"></div>
         <div class="health-bar" id="healthBarContainer" style="margin-top: 20px; display: none;">
             <label for="healthBar">Health Indicator:</label>
@@ -165,7 +165,7 @@
         async function initializeModel() {
             console.log('Attempting to load ONNX model...');
             try {
-                const session = await ort.InferenceSession.create('best_xgb_model.onnx');
+                const session = await ort.InferenceSession.create('http://localhost:8000/best_xgb_model.onnx');
                 console.log('ONNX model loaded successfully.');
                 return session;
             } catch (err) {
@@ -179,7 +179,6 @@
             session = loadedSession;
         });
 
-        // Perform inference
         document.getElementById('predictionForm').addEventListener('submit', async function(event) {
             event.preventDefault();
             console.log('Prediction form submitted.');
@@ -188,7 +187,6 @@
                 const formData = new FormData(event.target);
                 const data = Object.fromEntries(formData.entries());
 
-                // Validate and set default values for inputs
                 const inputValues = [
                     parseFloat(data.flight_cycle || 2500),
                     parseFloat(data.egt_probe_average || 777.5),
@@ -204,7 +202,6 @@
 
                 console.log('Input values:', inputValues);
 
-                // Apply scaling to input values
                 const scaleFactors = {
                     flight_cycle: { mean: 2500, std: 1000 },
                     egt_probe_average: { mean: 777.5, std: 100 },
@@ -222,20 +219,17 @@
                         const { mean, std } = scaleFactors[keys[index]];
                         return (value - mean) / std;
                     }
-                    return value; // For flight phase binary values
+                    return value;
                 });
 
                 console.log('Scaled input values:', scaledInputValues);
 
-                // Prepare input tensor
                 const inputTensor = new ort.Tensor('float32', new Float32Array(scaledInputValues), [1, 10]);
 
-                // Run inference
                 const feeds = { input: inputTensor };
                 const output = await session.run(feeds);
                 console.log('Model output:', output);
 
-                // Access the first key in the output object to retrieve the prediction
                 const outputKey = Object.keys(output)[0];
                 console.log('Output key:', outputKey);
 

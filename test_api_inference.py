@@ -23,7 +23,8 @@ def test_predict_valid_input():
         "vib_n2_1_bearing": 0.03,
         "vib_n2_turbine_frame": 0.04,
         "flight_phase_CRUISE": 0,
-        "flight_phase_TAKEOFF": 0
+        "flight_phase_TAKEOFF": 0,
+        "flight_phase_CLIMB": 0
     }
     response = client.post("/predict", json=valid_input)
     assert response.status_code == 200

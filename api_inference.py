@@ -44,6 +44,7 @@ class PredictionInput(BaseModel):
     vib_n2_turbine_frame: float
     flight_phase_CRUISE: int
     flight_phase_TAKEOFF: int
+    flight_phase_CLIMB: int
 
 @app.get("/health")
 async def health_check():
@@ -55,7 +56,7 @@ async def predict(input_data: PredictionInput):
     try:
         # Add preprocessing to match the scaler's expected input
         # Assuming 'flight_phase' was one-hot encoded during training
-        flight_phase_encoded = [0, 0]  # Example: Adjust based on actual encoding
+        flight_phase_encoded = [0, 0, 0]  # Adjusted to include 'CLIMB' encoding
 
         # Correct feature names to match training data
         feature_names = [
@@ -68,7 +69,8 @@ async def predict(input_data: PredictionInput):
             "vib_n2_#1_bearing",
             "vib_n2_turbine_frame",
             "flight_phase_CRUISE",
-            "flight_phase_TAKEOFF"
+            "flight_phase_TAKEOFF",
+            "flight_phase_CLIMB"
         ]
 
         # Update input array to include correct feature names
@@ -83,12 +85,30 @@ async def predict(input_data: PredictionInput):
                 input_data.vib_n2_1_bearing,  # Map to vib_n2_#1_bearing
                 input_data.vib_n2_turbine_frame,
                 input_data.flight_phase_CRUISE,  # Use provided value for flight_phase_CRUISE
-                input_data.flight_phase_TAKEOFF   # Use provided value for flight_phase_TAKEOFF
+                input_data.flight_phase_TAKEOFF,  # Use provided value for flight_phase_TAKEOFF
+                input_data.flight_phase_CLIMB   # Use provided value for flight_phase_CLIMB
             ]
         ])
 
         # Convert input data to a DataFrame with feature names
         input_df = pd.DataFrame(input_array, columns=feature_names)
+
+        # Ensure input features match the model's expected features
+        expected_features = [
+            "flight_cycle",
+            "egt_probe_average",
+            "fuel_flw",
+            "core_spd",
+            "zpn12p",
+            "vib_n1_#1_bearing",
+            "vib_n2_#1_bearing",
+            "vib_n2_turbine_frame",
+            "flight_phase_CRUISE",
+            "flight_phase_TAKEOFF"
+        ]
+
+        # Drop unexpected features and add missing ones with default values
+        input_df = input_df.reindex(columns=expected_features, fill_value=0)
 
         # Scale the input data
         scaled_input = scaler.transform(input_df)
@@ -109,3 +129,33 @@ async def predict(input_data: PredictionInput):
     except Exception as e:
         logging.error(f"Unexpected error: {e}")
         raise HTTPException(status_code=500, detail="An unexpected error occurred.")
+
+@app.post("/start-server")
+def start_server():
+    try:
+        # Add logic to initialize the server or perform setup tasks
+        # For example, starting a background process or initializing resources
+        return {"message": "Server started successfully!"}
+    except Exception as e:
+        logging.error(f"Error starting server: {e}")
+        raise HTTPException(status_code=500, detail="Failed to start the server.")
+
+@app.post("/initialize")
+def initialize():
+    try:
+        # Logic to start the HTTP server and load the ONNX model
+        # This is a placeholder for actual initialization logic
+        return {"message": "Initialization successful!"}
+    except Exception as e:
+        logging.error(f"Error during initialization: {e}")
+        raise HTTPException(status_code=500, detail="Initialization failed.")
+
+@app.post("/initialize-all")
+def initialize_all():
+    try:
+        # Perform all necessary initialization tasks
+        # Example: Load ONNX model, start HTTP server, etc.
+        return {"message": "All pre-work completed successfully!"}
+    except Exception as e:
+        logging.error(f"Error during full initialization: {e}")
+        raise HTTPException(status_code=500, detail="Full initialization failed.")
