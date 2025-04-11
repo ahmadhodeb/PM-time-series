@@ -61,6 +61,9 @@ with mlflow.start_run():
     for param, value in best_params.items():
         mlflow.log_param(f"best_{param}", value)
 
+    # Verify the type of the scaler before saving
+    print(f"Type of scaler before saving: {type(scaler)}")
+
     # Log the scaler
     import joblib
     joblib.dump(scaler, "scale_xgb.pkl")

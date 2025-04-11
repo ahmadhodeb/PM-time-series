@@ -13,45 +13,57 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #f4f4f4;
+            background: linear-gradient(135deg, #74ebd5, #acb6e5);
         }
         .container {
             width: 90%;
             max-width: 600px;
             background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+        .container:hover {
+            transform: translateY(-5px);
         }
         h1 {
             text-align: center;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             margin-bottom: 20px;
+            color: #333;
         }
         form {
             display: flex;
             flex-direction: column;
         }
         label {
-            margin-top: 10px;
+            margin-top: 15px;
             font-weight: bold;
+            color: #555;
         }
-        input {
-            padding: 10px;
+        input, select {
+            padding: 12px;
             margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
             font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        input:focus, select:focus {
+            border-color: #007BFF;
+            outline: none;
         }
         button {
             margin-top: 20px;
-            padding: 10px;
+            padding: 12px;
             background-color: #007BFF;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 1rem;
+            transition: background-color 0.3s ease;
         }
         button:hover {
             background-color: #0056b3;
@@ -64,44 +76,66 @@
             margin-top: 20px;
             font-weight: bold;
             text-align: center;
+            color: #333;
+        }
+        .health-bar {
+            margin-top: 20px;
+            display: none;
+        }
+        .health-bar label {
+            font-weight: bold;
+            color: #555;
+        }
+        .health-bar div {
+            background-color: #ccc;
+            border-radius: 6px;
+            overflow: hidden;
+            width: 100%;
+            height: 20px;
+            margin-top: 5px;
+        }
+        .health-bar div div {
+            background-color: #28a745;
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Predict Aircraft Engine Remaining Life in Flight Cycles</h1>
-        <button id="connectButton" style="float: right;">Connect to Server</button>
         <form id="predictionForm">
             <label for="flight_cycle">Flight Cycle:</label>
-            <input type="number" id="flight_cycle" name="flight_cycle" placeholder="e.g., 100" min="0" max="5000" >
+            <input type="number" id="flight_cycle" name="flight_cycle" placeholder="2500" min="0" max="5000" >
             <small>Value must be between 0 and 5000</small>
 
             <label for="egt_probe_average">EGT Probe Average:</label>
-            <input type="number" id="egt_probe_average" name="egt_probe_average" placeholder="e.g., 500" min="585" max="970" >
+            <input type="number" id="egt_probe_average" name="egt_probe_average" placeholder="777.5" min="585" max="970" >
             <small>Value must be between 585 and 970</small>
 
             <label for="fuel_flw">Fuel Flow:</label>
-            <input type="number" id="fuel_flw" name="fuel_flw" placeholder="e.g., 300" min="1105" max="5687" >
+            <input type="number" id="fuel_flw" name="fuel_flw" placeholder="3396" min="1105" max="5687" >
             <small>Value must be between 1105 and 5687</small>
 
             <label for="core_spd">Core Speed:</label>
-            <input type="number" id="core_spd" name="core_spd" placeholder="e.g., 95" min="91" max="109" >
+            <input type="number" id="core_spd" name="core_spd" placeholder="100" min="91" max="109" >
             <small>Value must be between 91 and 109</small>
 
             <label for="zpn12p">ZPN12P:</label>
-            <input type="number" id="zpn12p" name="zpn12p" placeholder="e.g., 50" min="52" max="91" >
+            <input type="number" id="zpn12p" name="zpn12p" placeholder="71.5" min="52" max="91" >
             <small>Value must be between 52 and 91</small>
 
             <label for="vib_n1_1_bearing">Vibration N1 #1 Bearing:</label>
-            <input type="number" id="vib_n1_1_bearing" name="vib_n1_1_bearing" placeholder="e.g., 0.02" min="0" max="0" >
-            <small>Value must be between 0 and 0.4</small>
+            <input type="number" id="vib_n1_1_bearing" name="vib_n1_1_bearing" placeholder="0.2" min="0" max="0" >
+            <small>Value must be between 0 and 1</small>
 
             <label for="vib_n2_1_bearing">Vibration N2 #1 Bearing:</label>
-            <input type="number" id="vib_n2_1_bearing" name="vib_n2_1_bearing" placeholder="e.g., 0.03" min="0" max="1" >
+            <input type="number" id="vib_n2_1_bearing" name="vib_n2_1_bearing" placeholder="0.625" min="0" max="1" >
             <small>Value must be between 0 and 1.25</small>
 
             <label for="vib_n2_turbine_frame">Vibration N2 Turbine Frame:</label>
-            <input type="number" id="vib_n2_turbine_frame" name="vib_n2_turbine_frame" placeholder="e.g., 0.04" min="0" max="2" >
+            <input type="number" id="vib_n2_turbine_frame" name="vib_n2_turbine_frame" placeholder="1" min="0" max="2" >
             <small>Value must be between 0 and 2</small>
 
             <label for="flight_phase">Flight Phase:</label>
@@ -122,90 +156,77 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
     <script>
-        const connectButton = document.getElementById('connectButton');
         const resultDiv = document.getElementById('result');
         const healthBarContainer = document.getElementById('healthBarContainer');
         const healthBar = document.getElementById('healthBar');
 
-        connectButton.addEventListener('click', async function() {
+        async function initializeModel() {
+            console.log('Attempting to load ONNX model...');
             try {
-                const response = await fetch('http://127.0.0.1:8000/health', {
-                    method: 'GET'
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Error: ${response.status} - ${response.statusText}`);
-                }
-
-                const healthStatus = await response.json();
-                if (healthStatus.status === 'healthy') {
-                    resultDiv.textContent = 'Server connected successfully!';
-                    connectButton.disabled = true;
-                } else {
-                    throw new Error('Server is not healthy. Please check the server.');
-                }
-            } catch (error) {
-                resultDiv.textContent = `Error: ${error.message}`;
-                console.error('Failed to connect to the server:', error);
+                const session = await ort.InferenceSession.create('best_xgb_model.onnx');
+                console.log('ONNX model loaded successfully.');
+                return session;
+            } catch (err) {
+                console.error('Error loading ONNX model:', err);
+                throw err;
             }
+        }
+
+        let session;
+        initializeModel().then(loadedSession => {
+            session = loadedSession;
         });
 
+        // Perform inference
         document.getElementById('predictionForm').addEventListener('submit', async function(event) {
             event.preventDefault();
-
-            const formData = new FormData(event.target);
-            const data = Object.fromEntries(formData.entries());
-
-            // Use placeholder values if inputs are empty
-            const placeholders = {
-                flight_cycle: 100,
-                egt_probe_average: 500,
-                fuel_flw: 300,
-                core_spd: 95,
-                zpn12p: 50,
-                vib_n1_1_bearing: 0.02,
-                vib_n2_1_bearing: 0.03,
-                vib_n2_turbine_frame: 0.04
-            };
-
-            for (const key in data) {
-                if (!data[key]) {
-                    data[key] = placeholders[key];
-                } else {
-                    data[key] = parseFloat(data[key]);
-                }
-            }
+            console.log('Prediction form submitted.');
 
             try {
-                const response = await fetch('http://127.0.0.1:8000/predict', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
+                const formData = new FormData(event.target);
+                const data = Object.fromEntries(formData.entries());
 
-                if (!response.ok) {
-                    if (response.status === 0) {
-                        throw new Error('Network error: Unable to reach the server. Please ensure the API server is running.');
-                    } else {
-                        throw new Error(`Error: ${response.status} - ${response.statusText}`);
-                    }
-                }
+                // Validate and set default values for inputs
+                const inputValues = [
+                    parseFloat(data.flight_cycle || 2500),
+                    parseFloat(data.egt_probe_average || 777.5),
+                    parseFloat(data.fuel_flw || 3396),
+                    parseFloat(data.core_spd || 100),
+                    parseFloat(data.zpn12p || 71.5),
+                    parseFloat(data.vib_n1_1_bearing || 0.2),
+                    parseFloat(data.vib_n2_1_bearing || 0.625),
+                    parseFloat(data.vib_n2_turbine_frame || 1),
+                    data.flight_phase === 'CRUISE' ? 1 : 0,
+                    data.flight_phase === 'TAKEOFF' ? 1 : 0
+                ];
 
-                const result = await response.json();
-                const roundedPrediction = Math.round(result.RUL_prediction);
-                document.getElementById('result').textContent = `Predicted RUL: ${roundedPrediction}`;
+                console.log('Input values:', inputValues);
 
-                // Update health bar
-                const maxFlightCycle = 5000; // Assuming max flight cycle is 5000
-                const healthPercentage = (roundedPrediction / maxFlightCycle) * 100;
-                healthBar.style.width = `${healthPercentage}%`;
-                healthBarContainer.style.display = 'block';
-            } catch (error) {
-                document.getElementById('result').textContent = `Error: ${error.message}`;
-                console.error('Detailed error:', error);
+                // Prepare input tensor
+                const inputTensor = new ort.Tensor('float32', new Float32Array(inputValues), [1, 10]);
+
+                // Run inference
+                const feeds = { input: inputTensor };
+                const output = await session.run(feeds);
+                console.log('Model output:', output);
+
+                // Access the first key in the output object to retrieve the prediction
+                const outputKey = Object.keys(output)[0];
+                console.log('Output key:', outputKey);
+
+                const prediction = output[outputKey].data[0];
+                console.log('Prediction value:', prediction);
+
+                document.getElementById('result').textContent = `Predicted RUL: ${Math.round(prediction)}`;
+
+                const maxFlightCycle = 5000;
+                const healthPercentage = (prediction / maxFlightCycle) * 100;
+                document.getElementById('healthBar').style.width = `${healthPercentage}%`;
+                document.getElementById('healthBarContainer').style.display = 'block';
+            } catch (err) {
+                console.error('Error during prediction:', err);
             }
         });
     </script>
