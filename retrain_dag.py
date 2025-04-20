@@ -5,7 +5,8 @@ import subprocess
 from data_drift import check_data_drift
 
 def retrain_model():
-    subprocess.run(['python', 'train_pipeline_xgboost.py'], check=True)
+    # Call the updated pipeline that trains all models
+    subprocess.run(['python', 'train_pipeline.py'], check=True)
 
 def register_model():
     # Logic to register the retrained model in MLflow

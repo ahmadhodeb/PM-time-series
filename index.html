@@ -107,35 +107,35 @@
         <h1>Predict Aircraft Engine Remaining Life in Flight Cycles</h1>
         <form id="predictionForm">
             <label for="flight_cycle">Flight Cycle:</label>
-            <input type="number" id="flight_cycle" name="flight_cycle" placeholder="2500" min="0" max="5000" step="0.01" >
+            <input type="number" id="flight_cycle" name="flight_cycle" placeholder="2500" value="2500" min="0" max="5000" step="0.01" >
             <small>Value must be between 0 and 5000</small>
 
             <label for="egt_probe_average">EGT Probe Average:</label>
-            <input type="number" id="egt_probe_average" name="egt_probe_average" placeholder="777.5" min="585" max="970" step="0.01" >
+            <input type="number" id="egt_probe_average" name="egt_probe_average" placeholder="777.5" value="777.5" min="585" max="970" step="0.01" >
             <small>Value must be between 585 and 970</small>
 
             <label for="fuel_flw">Fuel Flow:</label>
-            <input type="number" id="fuel_flw" name="fuel_flw" placeholder="3396" min="1105" max="5687" step="0.01" >
+            <input type="number" id="fuel_flw" name="fuel_flw" placeholder="3396" value="3396" min="1105" max="5687" step="0.01" >
             <small>Value must be between 1105 and 5687</small>
 
             <label for="core_spd">Core Speed:</label>
-            <input type="number" id="core_spd" name="core_spd" placeholder="100" min="91" max="109" step="0.01" >
+            <input type="number" id="core_spd" name="core_spd" placeholder="100" value="100" min="91" max="109" step="0.01" >
             <small>Value must be between 91 and 109</small>
 
             <label for="zpn12p">ZPN12P:</label>
-            <input type="number" id="zpn12p" name="zpn12p" placeholder="71.5" min="52" max="91" step="0.01" >
+            <input type="number" id="zpn12p" name="zpn12p" placeholder="71.5" value="71.5" min="52" max="91" step="0.01" >
             <small>Value must be between 52 and 91</small>
 
             <label for="vib_n1_1_bearing">Vibration N1 #1 Bearing:</label>
-            <input type="number" id="vib_n1_1_bearing" name="vib_n1_1_bearing" placeholder="0.2" min="0" max="1" step="0.01" >
+            <input type="number" id="vib_n1_1_bearing" name="vib_n1_1_bearing" placeholder="0.2" value="0.2" min="0" max="1" step="0.01" >
             <small>Value must be between 0 and 1</small>
 
             <label for="vib_n2_1_bearing">Vibration N2 #1 Bearing:</label>
-            <input type="number" id="vib_n2_1_bearing" name="vib_n2_1_bearing" placeholder="0.625" min="0" max="1.25" step="0.01" >
+            <input type="number" id="vib_n2_1_bearing" name="vib_n2_1_bearing" placeholder="0.625" value="0.625" min="0" max="1.25" step="0.001" >
             <small>Value must be between 0 and 1.25</small>
 
             <label for="vib_n2_turbine_frame">Vibration N2 Turbine Frame:</label>
-            <input type="number" id="vib_n2_turbine_frame" name="vib_n2_turbine_frame" placeholder="1" min="0" max="2" step="0.01" >
+            <input type="number" id="vib_n2_turbine_frame" name="vib_n2_turbine_frame" placeholder="1" value="1" min="0" max="2" step="0.01" >
             <small>Value must be between 0 and 2</small>
 
             <label for="flight_phase">Flight Phase:</label>
@@ -145,6 +145,15 @@
                 <option value="CLIMB">CLIMB</option>
             </select>
             <small>Select the flight phase: CRUISE, TAKEOFF or CLIMB</small>
+
+            <label for="model_choice">Model for Prediction:</label>
+            <select id="model_choice" name="model_choice">
+                <option value="xgboost">XGBoost</option>
+                <option value="extratrees">Extra Trees</option>
+                <option value="randomforest">Random Forest</option>
+                <option value="average" selected>Average of all models</option>
+            </select>
+            <small>Select which model to use for prediction or average</small>
 
             <button type="submit">Predict</button>
         <div class="result" id="result"></div>
@@ -156,94 +165,90 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
     <script>
         const resultDiv = document.getElementById('result');
         const healthBarContainer = document.getElementById('healthBarContainer');
         const healthBar = document.getElementById('healthBar');
 
-        async function initializeModel() {
-            console.log('Attempting to load ONNX model...');
-            try {
-                const session = await ort.InferenceSession.create('http://localhost:8000/best_xgb_model.onnx');
-                console.log('ONNX model loaded successfully.');
-                return session;
-            } catch (err) {
-                console.error('Error loading ONNX model:', err);
-                throw err;
-            }
-        }
-
-        let session;
-        initializeModel().then(loadedSession => {
-            session = loadedSession;
-        });
-
         document.getElementById('predictionForm').addEventListener('submit', async function(event) {
+            console.log('[DEBUG] Form submitted');
             event.preventDefault();
-            console.log('Prediction form submitted.');
+            resultDiv.textContent = '';
+            healthBarContainer.style.display = 'none';
+
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+            console.log('[DEBUG] Raw form data:', data);
+
+            // One-hot encode flight phase
+            data.flight_phase_CRUISE = data.flight_phase === 'CRUISE' ? 1 : 0;
+            data.flight_phase_TAKEOFF = data.flight_phase === 'TAKEOFF' ? 1 : 0;
+            data.flight_phase_CLIMB = data.flight_phase === 'CLIMB' ? 1 : 0;
+            delete data.flight_phase;
+            console.log('[DEBUG] Data after one-hot encoding:', data);
+
+            // Ensure all required fields are present and have correct types
+            const requiredFields = {
+                flight_cycle: 0,
+                egt_probe_average: 0,
+                fuel_flw: 0,
+                core_spd: 0,
+                zpn12p: 0,
+                vib_n1_1_bearing: 0,
+                vib_n2_1_bearing: 0,
+                vib_n2_turbine_frame: 0,
+                flight_phase_CRUISE: 0,
+                flight_phase_TAKEOFF: 0,
+                flight_phase_CLIMB: 0,
+                model_choice: 'xgboost'
+            };
+            for (const key in requiredFields) {
+                if (data[key] === undefined || data[key] === null || data[key] === '' || Number.isNaN(data[key])) {
+                    data[key] = requiredFields[key];
+                }
+            }
+            // Convert numeric fields
+            [
+                'flight_cycle', 'egt_probe_average', 'fuel_flw', 'core_spd', 'zpn12p',
+                'vib_n1_1_bearing', 'vib_n2_1_bearing', 'vib_n2_turbine_frame',
+                'flight_phase_CRUISE', 'flight_phase_TAKEOFF', 'flight_phase_CLIMB'
+            ].forEach(key => {
+                data[key] = parseFloat(data[key]);
+                if (isNaN(data[key])) data[key] = 0;
+            });
+            // model_choice as string
+            data.model_choice = String(data.model_choice);
 
             try {
-                const formData = new FormData(event.target);
-                const data = Object.fromEntries(formData.entries());
-
-                const inputValues = [
-                    parseFloat(data.flight_cycle || 2500),
-                    parseFloat(data.egt_probe_average || 777.5),
-                    parseFloat(data.fuel_flw || 3396),
-                    parseFloat(data.core_spd || 100),
-                    parseFloat(data.zpn12p || 71.5),
-                    parseFloat(data.vib_n1_1_bearing || 0.2),
-                    parseFloat(data.vib_n2_1_bearing || 0.625),
-                    parseFloat(data.vib_n2_turbine_frame || 1),
-                    data.flight_phase === 'CRUISE' ? 1 : 0,
-                    data.flight_phase === 'TAKEOFF' ? 1 : 0
-                ];
-
-                console.log('Input values:', inputValues);
-
-                const scaleFactors = {
-                    flight_cycle: { mean: 2500, std: 1000 },
-                    egt_probe_average: { mean: 777.5, std: 100 },
-                    fuel_flw: { mean: 3396, std: 1000 },
-                    core_spd: { mean: 100, std: 5 },
-                    zpn12p: { mean: 71.5, std: 10 },
-                    vib_n1_1_bearing: { mean: 0.2, std: 0.1 },
-                    vib_n2_1_bearing: { mean: 0.625, std: 0.2 },
-                    vib_n2_turbine_frame: { mean: 1, std: 0.5 }
-                };
-
-                const scaledInputValues = inputValues.map((value, index) => {
-                    const keys = Object.keys(scaleFactors);
-                    if (index < keys.length) {
-                        const { mean, std } = scaleFactors[keys[index]];
-                        return (value - mean) / std;
-                    }
-                    return value;
+                console.log('[DEBUG] Sending JSON:', JSON.stringify(data));
+                const response = await fetch('http://127.0.0.1:8001/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
                 });
-
-                console.log('Scaled input values:', scaledInputValues);
-
-                const inputTensor = new ort.Tensor('float32', new Float32Array(scaledInputValues), [1, 10]);
-
-                const feeds = { input: inputTensor };
-                const output = await session.run(feeds);
-                console.log('Model output:', output);
-
-                const outputKey = Object.keys(output)[0];
-                console.log('Output key:', outputKey);
-
-                const prediction = output[outputKey].data[0];
-                console.log('Prediction value:', prediction);
-
-                document.getElementById('result').textContent = `Predicted RUL: ${Math.round(prediction)}`;
-
-                const maxFlightCycle = 5000;
-                const healthPercentage = (prediction / maxFlightCycle) * 100;
-                document.getElementById('healthBar').style.width = `${healthPercentage}%`;
-                document.getElementById('healthBarContainer').style.display = 'block';
+                console.log('[DEBUG] Response status:', response.status);
+                if (!response.ok) {
+                    let errorText = await response.text();
+                    console.error('[DEBUG] Backend error response:', errorText);
+                    throw new Error(`Error: ${response.status} - ${response.statusText}\n${errorText}`);
+                }
+                const result = await response.json();
+                console.log('[DEBUG] Prediction result:', result);
+                const roundedPrediction = Math.round(result.RUL_prediction);
+                if (roundedPrediction < 0) {
+                    resultDiv.textContent = 'Warning: Engine remaining life is very low. Please check your input values.';
+                    healthBarContainer.style.display = 'none';
+                } else {
+                    resultDiv.textContent = `Predicted RUL: ${roundedPrediction}`;
+                    // Update health bar
+                    const maxFlightCycle = 5000;
+                    const healthPercentage = Math.max(0, Math.min(100, (roundedPrediction / maxFlightCycle) * 100));
+                    healthBar.style.width = `${healthPercentage}%`;
+                    healthBarContainer.style.display = 'block';
+                }
             } catch (err) {
-                console.error('Error during prediction:', err);
+                console.error('[DEBUG] Prediction failed:', err);
+                resultDiv.textContent = 'Prediction failed: ' + err.message;
             }
         });
     </script>

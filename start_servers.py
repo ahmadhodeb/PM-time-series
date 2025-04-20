@@ -3,15 +3,17 @@ import socketserver
 import os
 import subprocess
 import psutil
+import sys
+import time
+
+print('[DEBUG] start_servers.py: Starting server...')
 
 class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
     def do_POST(self):
-        # Handle POST requests
         self.send_response(200)
         self.send_header("Content-type", "text/plain")
         self.end_headers()
         self.wfile.write(b"POST request received")
-
 
 def free_port(port):
     for proc in psutil.process_iter(['pid', 'name']):
@@ -23,27 +25,26 @@ def free_port(port):
         except (psutil.AccessDenied, psutil.NoSuchProcess):
             pass
 
-
-def start_server():
-    # Change directory to the project folder
+def start_static_server():
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
-
-    # Free the port before starting the server
     PORT = 8000
     free_port(PORT)
-
-    # Start the HTTP server
     handler = CustomHTTPRequestHandler
     with socketserver.TCPServer(("", PORT), handler) as httpd:
-        print(f"Serving HTTP on port {PORT}...")
+        print(f"Serving static files on port {PORT}...")
         httpd.serve_forever()
 
-if __name__ == "__main__":
-    try:
-        # Start the backend server
-        subprocess.Popen(["python", "api_inference.py"])
+def start_fastapi_server():
+    # Start FastAPI backend on port 8001 using uvicorn
+    print("Starting FastAPI backend on port 8001...")
+    subprocess.Popen([sys.executable, "-m", "uvicorn", "api_inference:app", "--host", "127.0.0.1", "--port", "8001", "--reload"])
+    # Give backend a moment to start
+    time.sleep(2)
 
-        # Start the HTTP server
-        start_server()
+if __name__ == "__main__":
+    print('[DEBUG] start_servers.py: Server script loaded.')
+    try:
+        start_fastapi_server()
+        start_static_server()
     except KeyboardInterrupt:
         print("Shutting down the server...")

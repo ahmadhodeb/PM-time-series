@@ -48,3 +48,125 @@
 2025-04-11 14:17:57,867 - Input: {'flight_cycle': 2000.0, 'egt_probe_average': 600.0, 'fuel_flw': 5000.0, 'core_spd': 95.0, 'zpn12p': 50.0, 'vib_n1_1_bearing': 0.02, 'vib_n2_1_bearing': 0.03, 'vib_n2_turbine_frame': 0.04}, Prediction: 1986.0771484375
 2025-04-11 14:17:58,062 - Input: {'flight_cycle': 2000.0, 'egt_probe_average': 600.0, 'fuel_flw': 5000.0, 'core_spd': 95.0, 'zpn12p': 50.0, 'vib_n1_1_bearing': 0.02, 'vib_n2_1_bearing': 0.03, 'vib_n2_turbine_frame': 0.04}, Prediction: 1986.0771484375
 2025-04-11 14:17:58,302 - Input: {'flight_cycle': 2000.0, 'egt_probe_average': 600.0, 'fuel_flw': 5000.0, 'core_spd': 95.0, 'zpn12p': 50.0, 'vib_n1_1_bearing': 0.02, 'vib_n2_1_bearing': 0.03, 'vib_n2_turbine_frame': 0.04}, Prediction: 1986.0771484375
+2025-04-20 23:46:45,021 - Validation error: Invalid model_choice. Choose from xgboost, randomforest, extratrees, average.
+2025-04-20 23:46:48,270 - Validation error: Invalid model_choice. Choose from xgboost, randomforest, extratrees, average.
+2025-04-20 23:49:09,440 - Validation error: Invalid model_choice. Choose from xgboost, randomforest, extratrees, average.
+2025-04-20 23:49:19,212 - Input: {'flight_cycle': 0.0, 'egt_probe_average': 0.0, 'fuel_flw': 0.0, 'core_spd': 0.0, 'zpn12p': 0.0, 'vib_n1_1_bearing': 0.0, 'vib_n2_1_bearing': 0.0, 'vib_n2_turbine_frame': 0.0, 'flight_phase_CRUISE': 0, 'flight_phase_TAKEOFF': 0, 'flight_phase_CLIMB': 0, 'model_choice': 'xgboost'}, Model: xgboost, Prediction: 4526
+2025-04-20 23:59:04,903 - Validation error: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- flight_phase_CLIMB
+
+2025-04-21 00:00:31,682 - Validation error: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- flight_phase_CLIMB
+
+2025-04-21 00:00:44,953 - Validation error: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- flight_phase_CLIMB
+
+2025-04-21 00:02:44,059 - Validation error: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- flight_phase_CLIMB
+
+2025-04-21 00:02:47,693 - Validation error: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- flight_phase_CLIMB
+
+2025-04-21 00:03:04,743 - Validation error: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- flight_phase_CLIMB
+
+2025-04-21 00:03:05,507 - Validation error: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- flight_phase_CLIMB
+
+2025-04-21 00:03:05,696 - Validation error: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- flight_phase_CLIMB
+
+2025-04-21 00:03:20,302 - Validation error: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- flight_phase_CLIMB
+
+2025-04-21 00:08:20,968 - Validation error: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- flight_phase_CLIMB
+
+2025-04-21 00:10:18,507 - Validation error: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- flight_phase_CLIMB
+
+2025-04-21 00:57:10,761 - Validation error: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- flight_phase_CLIMB
+
+2025-04-21 00:57:11,525 - Validation error: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- flight_phase_CLIMB
+
+2025-04-21 00:57:33,446 - Validation error: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- flight_phase_CLIMB
+
+2025-04-21 00:57:35,555 - Validation error: The feature names should match those that were passed during fit.
+Feature names must be in the same order as they were in fit.
+
+2025-04-21 00:57:40,677 - Validation error: The feature names should match those that were passed during fit.
+Feature names must be in the same order as they were in fit.
+
+2025-04-21 00:57:43,229 - Validation error: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- flight_phase_CLIMB
+
+2025-04-21 01:04:30,042 - Validation error: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- flight_phase_CLIMB
+
+2025-04-21 01:04:30,732 - Validation error: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- flight_phase_CLIMB
+
+2025-04-21 01:05:06,141 - Validation error: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- flight_phase_CLIMB
+
+2025-04-21 01:06:51,912 - Validation error: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- flight_phase_CLIMB
+
+2025-04-21 01:07:10,408 - Validation error: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- flight_phase_CLIMB
+
+2025-04-21 01:22:42,154 - Validation error: The feature names should match those that were passed during fit.
+Feature names must be in the same order as they were in fit.
+
+2025-04-21 01:25:55,952 - Input: {'flight_cycle': 0.0, 'egt_probe_average': 0.0, 'fuel_flw': 0.0, 'core_spd': 0.0, 'zpn12p': 0.0, 'vib_n1_1_bearing': 0.0, 'vib_n2_1_bearing': 0.0, 'vib_n2_turbine_frame': 0.0, 'flight_phase_CRUISE': 1, 'flight_phase_TAKEOFF': 0, 'flight_phase_CLIMB': 0, 'model_choice': 'xgboost'}, Model: xgboost, Prediction: 4369
+2025-04-21 01:29:00,886 - Input: {'flight_cycle': 2500.0, 'egt_probe_average': 777.5, 'fuel_flw': 3396.0, 'core_spd': 100.0, 'zpn12p': 71.5, 'vib_n1_1_bearing': 0.2, 'vib_n2_1_bearing': 0.625, 'vib_n2_turbine_frame': 1.0, 'flight_phase_CRUISE': 1, 'flight_phase_TAKEOFF': 0, 'flight_phase_CLIMB': 0, 'model_choice': 'xgboost'}, Model: xgboost, Prediction: 1723
+2025-04-21 01:29:08,550 - Input: {'flight_cycle': 3000.0, 'egt_probe_average': 777.5, 'fuel_flw': 3396.0, 'core_spd': 100.0, 'zpn12p': 71.5, 'vib_n1_1_bearing': 0.2, 'vib_n2_1_bearing': 0.625, 'vib_n2_turbine_frame': 1.0, 'flight_phase_CRUISE': 1, 'flight_phase_TAKEOFF': 0, 'flight_phase_CLIMB': 0, 'model_choice': 'xgboost'}, Model: xgboost, Prediction: 1125
+2025-04-21 01:29:11,110 - Input: {'flight_cycle': 3000.0, 'egt_probe_average': 777.5, 'fuel_flw': 3396.0, 'core_spd': 100.0, 'zpn12p': 71.5, 'vib_n1_1_bearing': 0.2, 'vib_n2_1_bearing': 0.625, 'vib_n2_turbine_frame': 1.0, 'flight_phase_CRUISE': 1, 'flight_phase_TAKEOFF': 0, 'flight_phase_CLIMB': 0, 'model_choice': 'extratrees'}, Model: extratrees, Prediction: 1330
+2025-04-21 01:29:13,544 - Input: {'flight_cycle': 3000.0, 'egt_probe_average': 777.5, 'fuel_flw': 3396.0, 'core_spd': 100.0, 'zpn12p': 71.5, 'vib_n1_1_bearing': 0.2, 'vib_n2_1_bearing': 0.625, 'vib_n2_turbine_frame': 1.0, 'flight_phase_CRUISE': 1, 'flight_phase_TAKEOFF': 0, 'flight_phase_CLIMB': 0, 'model_choice': 'randomforest'}, Model: randomforest, Prediction: 1238
+2025-04-21 01:29:15,869 - Input: {'flight_cycle': 3000.0, 'egt_probe_average': 777.5, 'fuel_flw': 3396.0, 'core_spd': 100.0, 'zpn12p': 71.5, 'vib_n1_1_bearing': 0.2, 'vib_n2_1_bearing': 0.625, 'vib_n2_turbine_frame': 1.0, 'flight_phase_CRUISE': 1, 'flight_phase_TAKEOFF': 0, 'flight_phase_CLIMB': 0, 'model_choice': 'average'}, Model: average, Prediction: 1231
+2025-04-21 01:29:18,690 - Input: {'flight_cycle': 3000.0, 'egt_probe_average': 777.5, 'fuel_flw': 3396.0, 'core_spd': 100.0, 'zpn12p': 71.5, 'vib_n1_1_bearing': 0.2, 'vib_n2_1_bearing': 0.625, 'vib_n2_turbine_frame': 1.0, 'flight_phase_CRUISE': 1, 'flight_phase_TAKEOFF': 0, 'flight_phase_CLIMB': 0, 'model_choice': 'xgboost'}, Model: xgboost, Prediction: 1125
+2025-04-21 01:29:20,959 - Input: {'flight_cycle': 3000.0, 'egt_probe_average': 777.5, 'fuel_flw': 3396.0, 'core_spd': 100.0, 'zpn12p': 71.5, 'vib_n1_1_bearing': 0.2, 'vib_n2_1_bearing': 0.625, 'vib_n2_turbine_frame': 1.0, 'flight_phase_CRUISE': 1, 'flight_phase_TAKEOFF': 0, 'flight_phase_CLIMB': 0, 'model_choice': 'extratrees'}, Model: extratrees, Prediction: 1330
+2025-04-21 01:29:22,806 - Input: {'flight_cycle': 3000.0, 'egt_probe_average': 777.5, 'fuel_flw': 3396.0, 'core_spd': 100.0, 'zpn12p': 71.5, 'vib_n1_1_bearing': 0.2, 'vib_n2_1_bearing': 0.625, 'vib_n2_turbine_frame': 1.0, 'flight_phase_CRUISE': 1, 'flight_phase_TAKEOFF': 0, 'flight_phase_CLIMB': 0, 'model_choice': 'randomforest'}, Model: randomforest, Prediction: 1238
+2025-04-21 01:29:24,965 - Input: {'flight_cycle': 3000.0, 'egt_probe_average': 777.5, 'fuel_flw': 3396.0, 'core_spd': 100.0, 'zpn12p': 71.5, 'vib_n1_1_bearing': 0.2, 'vib_n2_1_bearing': 0.625, 'vib_n2_turbine_frame': 1.0, 'flight_phase_CRUISE': 1, 'flight_phase_TAKEOFF': 0, 'flight_phase_CLIMB': 0, 'model_choice': 'average'}, Model: average, Prediction: 1231
+2025-04-21 01:29:28,242 - Input: {'flight_cycle': 3000.0, 'egt_probe_average': 777.5, 'fuel_flw': 3396.0, 'core_spd': 100.0, 'zpn12p': 71.5, 'vib_n1_1_bearing': 0.2, 'vib_n2_1_bearing': 0.625, 'vib_n2_turbine_frame': 1.0, 'flight_phase_CRUISE': 0, 'flight_phase_TAKEOFF': 1, 'flight_phase_CLIMB': 0, 'model_choice': 'average'}, Model: average, Prediction: 1271
+2025-04-21 01:29:30,769 - Input: {'flight_cycle': 3000.0, 'egt_probe_average': 777.5, 'fuel_flw': 3396.0, 'core_spd': 100.0, 'zpn12p': 71.5, 'vib_n1_1_bearing': 0.2, 'vib_n2_1_bearing': 0.625, 'vib_n2_turbine_frame': 1.0, 'flight_phase_CRUISE': 0, 'flight_phase_TAKEOFF': 0, 'flight_phase_CLIMB': 1, 'model_choice': 'average'}, Model: average, Prediction: 1193
+2025-04-21 01:29:36,001 - Input: {'flight_cycle': 4000.0, 'egt_probe_average': 777.5, 'fuel_flw': 3396.0, 'core_spd': 100.0, 'zpn12p': 71.5, 'vib_n1_1_bearing': 0.2, 'vib_n2_1_bearing': 0.625, 'vib_n2_turbine_frame': 1.0, 'flight_phase_CRUISE': 0, 'flight_phase_TAKEOFF': 0, 'flight_phase_CLIMB': 1, 'model_choice': 'average'}, Model: average, Prediction: 335
+2025-04-21 01:29:39,313 - Input: {'flight_cycle': 4000.0, 'egt_probe_average': 777.5, 'fuel_flw': 3396.0, 'core_spd': 100.0, 'zpn12p': 71.5, 'vib_n1_1_bearing': 0.2, 'vib_n2_1_bearing': 0.625, 'vib_n2_turbine_frame': 1.0, 'flight_phase_CRUISE': 0, 'flight_phase_TAKEOFF': 0, 'flight_phase_CLIMB': 1, 'model_choice': 'xgboost'}, Model: xgboost, Prediction: 121
+2025-04-21 01:29:41,184 - Input: {'flight_cycle': 4000.0, 'egt_probe_average': 777.5, 'fuel_flw': 3396.0, 'core_spd': 100.0, 'zpn12p': 71.5, 'vib_n1_1_bearing': 0.2, 'vib_n2_1_bearing': 0.625, 'vib_n2_turbine_frame': 1.0, 'flight_phase_CRUISE': 0, 'flight_phase_TAKEOFF': 0, 'flight_phase_CLIMB': 1, 'model_choice': 'extratrees'}, Model: extratrees, Prediction: 466
+2025-04-21 01:29:43,638 - Input: {'flight_cycle': 4000.0, 'egt_probe_average': 777.5, 'fuel_flw': 3396.0, 'core_spd': 100.0, 'zpn12p': 71.5, 'vib_n1_1_bearing': 0.2, 'vib_n2_1_bearing': 0.625, 'vib_n2_turbine_frame': 1.0, 'flight_phase_CRUISE': 0, 'flight_phase_TAKEOFF': 0, 'flight_phase_CLIMB': 1, 'model_choice': 'randomforest'}, Model: randomforest, Prediction: 418
+2025-04-21 01:29:46,339 - Input: {'flight_cycle': 4000.0, 'egt_probe_average': 777.5, 'fuel_flw': 3396.0, 'core_spd': 100.0, 'zpn12p': 71.5, 'vib_n1_1_bearing': 0.2, 'vib_n2_1_bearing': 0.625, 'vib_n2_turbine_frame': 1.0, 'flight_phase_CRUISE': 0, 'flight_phase_TAKEOFF': 0, 'flight_phase_CLIMB': 1, 'model_choice': 'average'}, Model: average, Prediction: 335
+2025-04-21 01:29:51,489 - Input: {'flight_cycle': 4400.0, 'egt_probe_average': 777.5, 'fuel_flw': 3396.0, 'core_spd': 100.0, 'zpn12p': 71.5, 'vib_n1_1_bearing': 0.2, 'vib_n2_1_bearing': 0.625, 'vib_n2_turbine_frame': 1.0, 'flight_phase_CRUISE': 0, 'flight_phase_TAKEOFF': 0, 'flight_phase_CLIMB': 1, 'model_choice': 'average'}, Model: average, Prediction: 17
+2025-04-21 01:29:54,010 - Input: {'flight_cycle': 4400.0, 'egt_probe_average': 777.5, 'fuel_flw': 3396.0, 'core_spd': 100.0, 'zpn12p': 71.5, 'vib_n1_1_bearing': 0.2, 'vib_n2_1_bearing': 0.625, 'vib_n2_turbine_frame': 1.0, 'flight_phase_CRUISE': 0, 'flight_phase_TAKEOFF': 0, 'flight_phase_CLIMB': 1, 'model_choice': 'xgboost'}, Model: xgboost, Prediction: -122
+2025-04-21 01:29:56,141 - Input: {'flight_cycle': 4400.0, 'egt_probe_average': 777.5, 'fuel_flw': 3396.0, 'core_spd': 100.0, 'zpn12p': 71.5, 'vib_n1_1_bearing': 0.2, 'vib_n2_1_bearing': 0.625, 'vib_n2_turbine_frame': 1.0, 'flight_phase_CRUISE': 0, 'flight_phase_TAKEOFF': 0, 'flight_phase_CLIMB': 1, 'model_choice': 'extratrees'}, Model: extratrees, Prediction: 88
+2025-04-21 01:29:57,890 - Input: {'flight_cycle': 4400.0, 'egt_probe_average': 777.5, 'fuel_flw': 3396.0, 'core_spd': 100.0, 'zpn12p': 71.5, 'vib_n1_1_bearing': 0.2, 'vib_n2_1_bearing': 0.625, 'vib_n2_turbine_frame': 1.0, 'flight_phase_CRUISE': 0, 'flight_phase_TAKEOFF': 0, 'flight_phase_CLIMB': 1, 'model_choice': 'randomforest'}, Model: randomforest, Prediction: 84
+2025-04-21 01:30:00,786 - Input: {'flight_cycle': 4400.0, 'egt_probe_average': 777.5, 'fuel_flw': 3396.0, 'core_spd': 100.0, 'zpn12p': 71.5, 'vib_n1_1_bearing': 0.2, 'vib_n2_1_bearing': 0.625, 'vib_n2_turbine_frame': 1.0, 'flight_phase_CRUISE': 0, 'flight_phase_TAKEOFF': 0, 'flight_phase_CLIMB': 1, 'model_choice': 'average'}, Model: average, Prediction: 17
+2025-04-21 01:30:44,220 - Input: {'flight_cycle': 5000.0, 'egt_probe_average': 777.5, 'fuel_flw': 3396.0, 'core_spd': 100.0, 'zpn12p': 71.5, 'vib_n1_1_bearing': 0.2, 'vib_n2_1_bearing': 0.625, 'vib_n2_turbine_frame': 1.0, 'flight_phase_CRUISE': 0, 'flight_phase_TAKEOFF': 0, 'flight_phase_CLIMB': 1, 'model_choice': 'average'}, Model: average, Prediction: -48
+2025-04-21 01:32:11,032 - Input: {'flight_cycle': 5000.0, 'egt_probe_average': 777.5, 'fuel_flw': 3396.0, 'core_spd': 100.0, 'zpn12p': 71.5, 'vib_n1_1_bearing': 0.2, 'vib_n2_1_bearing': 0.625, 'vib_n2_turbine_frame': 1.0, 'flight_phase_CRUISE': 0, 'flight_phase_TAKEOFF': 0, 'flight_phase_CLIMB': 1, 'model_choice': 'average'}, Model: average, Prediction: -48
+2025-04-21 01:32:11,656 - Input: {'flight_cycle': 5000.0, 'egt_probe_average': 777.5, 'fuel_flw': 3396.0, 'core_spd': 100.0, 'zpn12p': 71.5, 'vib_n1_1_bearing': 0.2, 'vib_n2_1_bearing': 0.625, 'vib_n2_turbine_frame': 1.0, 'flight_phase_CRUISE': 0, 'flight_phase_TAKEOFF': 0, 'flight_phase_CLIMB': 1, 'model_choice': 'average'}, Model: average, Prediction: -48
+2025-04-21 01:32:15,212 - Input: {'flight_cycle': 2500.0, 'egt_probe_average': 777.5, 'fuel_flw': 3396.0, 'core_spd': 100.0, 'zpn12p': 71.5, 'vib_n1_1_bearing': 0.2, 'vib_n2_1_bearing': 0.625, 'vib_n2_turbine_frame': 1.0, 'flight_phase_CRUISE': 1, 'flight_phase_TAKEOFF': 0, 'flight_phase_CLIMB': 0, 'model_choice': 'xgboost'}, Model: xgboost, Prediction: 1723
+2025-04-21 01:32:21,244 - Input: {'flight_cycle': 5000.0, 'egt_probe_average': 777.5, 'fuel_flw': 3396.0, 'core_spd': 100.0, 'zpn12p': 71.5, 'vib_n1_1_bearing': 0.2, 'vib_n2_1_bearing': 0.625, 'vib_n2_turbine_frame': 1.0, 'flight_phase_CRUISE': 1, 'flight_phase_TAKEOFF': 0, 'flight_phase_CLIMB': 0, 'model_choice': 'average'}, Model: average, Prediction: -36
+2025-04-21 01:33:32,950 - Input: {'flight_cycle': 2500.0, 'egt_probe_average': 777.5, 'fuel_flw': 3396.0, 'core_spd': 100.0, 'zpn12p': 71.5, 'vib_n1_1_bearing': 0.2, 'vib_n2_1_bearing': 0.625, 'vib_n2_turbine_frame': 1.0, 'flight_phase_CRUISE': 1, 'flight_phase_TAKEOFF': 0, 'flight_phase_CLIMB': 0, 'model_choice': 'average'}, Model: average, Prediction: 1820
+2025-04-21 01:33:37,124 - Input: {'flight_cycle': 4000.0, 'egt_probe_average': 777.5, 'fuel_flw': 3396.0, 'core_spd': 100.0, 'zpn12p': 71.5, 'vib_n1_1_bearing': 0.2, 'vib_n2_1_bearing': 0.625, 'vib_n2_turbine_frame': 1.0, 'flight_phase_CRUISE': 1, 'flight_phase_TAKEOFF': 0, 'flight_phase_CLIMB': 0, 'model_choice': 'average'}, Model: average, Prediction: 341
